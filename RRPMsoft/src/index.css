@@ -4,4 +4,20 @@ body {
   margin: auto;
   max-width: 38rem;
   padding: 2rem;
+  background-color: #131637;
+  overflow: hidden;
+  justify-content: center;
+}
+
+
+.glassmorphism {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  width: 400px;
+}
+.emoji {
+  font-size: 1.5rem;
 }
