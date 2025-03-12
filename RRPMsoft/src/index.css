@@ -4,7 +4,7 @@ body {
   margin: auto;
   max-width: 38rem;
   padding: 2rem;
-  background-color: #131637;
+  background-image: linear-gradient(to bottom right, #131637, #45250b);
   overflow: hidden;
   justify-content: center;
 }
@@ -17,6 +17,7 @@ body {
   -webkit-backdrop-filter: blur(10px);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
   width: 400px;
+  margin-top: -20px;
 }
 .emoji {
   font-size: 1.5rem;

@@ -1,7 +1,7 @@
 const API_BASE_URL = "http://localhost:3001/auth";
 
 document.addEventListener("DOMContentLoaded", () => {
-    const registerButton = document.querySelector(".btn-primary.w-100");
+    const registerButton = document.querySelector("#createAccount");
 
     if (registerButton) {
         registerButton.addEventListener("click", async () => {
