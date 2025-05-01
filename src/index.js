@@ -1,6 +1,13 @@
 const { app, BrowserWindow } = require('electron');
 const path = require('node:path');
 
+const { ipcMain } = require('electron');
+const bcrypt = require('bcryptjs');
+
+ipcMain.handle('hash-password', async (event, password) => {
+  return await bcrypt.hash(password, 10);
+});
+
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
   app.quit();
@@ -15,6 +22,7 @@ const createWindow = () => {
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
     },
+    preload: path.join(__dirname, 'preload.js'),
     webPreferences: { nodeIntegration: true }
   });
 
@@ -22,7 +30,7 @@ const createWindow = () => {
   mainWindow.loadFile(path.join(__dirname, 'index.html'));
 
   // Open the DevTools.
-  // mainWindow.webContents.openDevTools();
+  mainWindow.webContents.openDevTools();
 
   mainWindow.setMenu(null);
 };
