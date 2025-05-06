@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
   
                 if (response.ok) {
                     alert("Yes chef t'es connecté c'est bien t'es content ?");
-                    window.location.href = "../index.html";
+                    window.location.href = "loggedIn/home.html";
                 } else {
                     alert(data.error || "Une erreur est survenue.");
                 }
