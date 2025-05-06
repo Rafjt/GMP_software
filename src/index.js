@@ -7,8 +7,6 @@ ipcMain.handle('hash-password', async (event, password) => {
   return await bcrypt.hash(password, 10);
 });
 
-// mainWindow.loadFile(path.join(__dirname, 'src', 'index.html'));
-
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
   app.quit();
