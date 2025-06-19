@@ -7,11 +7,11 @@ document.addEventListener("DOMContentLoaded", () => {
     logoutButton.addEventListener("click", async () => {
       try {
         await logout(); // Call the imported logout function
-        alert("Déconnexion réussie.");
+        alert("Successfuly logged out");
         window.location.href = "../index.html"; // Redirect to login or landing page
       } catch (error) {
-        console.error("Erreur lors de la déconnexion:", error);
-        alert("Impossible de se déconnecter.");
+        console.error("An error occured whilst logging out", error);
+        alert("Logout failed");
       }
     });
   }
