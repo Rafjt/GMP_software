@@ -1,21 +1,4 @@
-function generatePassword(length, useNumbers = true, useSymbols = true) {
-    const lowercase = 'abcdefghijklmnopqrstuvwxyz';
-    const uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    const numbers = '0123456789';
-    const symbols = '!@#$%^&*()_+[]{}|;:,.<>?';
-  
-    // Construction du charset selon les options
-    let charset = lowercase + uppercase;
-    if (useNumbers) charset += numbers;
-    if (useSymbols) charset += symbols;
-  
-    const array = new Uint32Array(length);
-    window.crypto.getRandomValues(array);
-  
-    return Array.from(array)
-      .map(x => charset[x % charset.length])
-      .join('');
-  }
+import { generatePassword } from "../components/functions.js";
   
   const lengthSlider = document.getElementById("lengthRange");
   const lengthValue = document.getElementById("lengthValue");
@@ -34,13 +17,10 @@ function generatePassword(length, useNumbers = true, useSymbols = true) {
   }
   
   function copyPassword() {
-    console.log("copying password");
     const password = passwordOutput.textContent;
-    console.log(password);
     if (!password) return;
   
     navigator.clipboard.writeText(password).then(() => {
-        console.log("navigator function starts")
       copiedMessage.style.display = "inline";
       setTimeout(() => {
         copiedMessage.style.display = "none";

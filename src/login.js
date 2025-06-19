@@ -1,42 +1,40 @@
-const API_BASE_URL = "http://localhost:3001/auth";
-
-// authentification
+// import { API_AUTH_URL } from "./components/constants.js";
+import { loginUser, getSalt } from './components/functions.js';
 
 document.addEventListener("DOMContentLoaded", () => {
-    const loginButton = document.querySelector("#login");
-  
-    if (loginButton) {
-        loginButton.addEventListener("click", async () => {
-            const email = document.querySelector('input[type="email"]').value.trim();
-            const password = document.querySelector('input[type="password"]').value.trim();
-  
-            if (!email || !password) {
-                alert("Veuillez remplir tous les champs.");
-                return;
-            }
-  
-            try {
-                const response = await fetch(`${API_BASE_URL}/login`, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({ email, password }),
-                });
-  
-                const data = await response.json();
-  
-                if (response.ok) {
-                    alert("Yes chef t'es connecté c'est bien t'es content ?");
-                    window.location.href = "loggedIn/home.html";
-                } else {
-                    alert(data.error || "Une erreur est survenue.");
-                }
-            } catch (error) {
-                console.error("Erreur lors de l'authentification:", error);
-                alert("Impossible de contacter le serveur.");
-            }
-        });
-    }
-  });
-  
+  const loginButton = document.querySelector("#login");
+
+  if (loginButton) {
+    loginButton.addEventListener("click", async () => {
+      const email = document.querySelector('input[type="email"]').value.trim();
+      const password = document.querySelector('input[type="password"]').value.trim();
+
+      if (!email || !password) {
+        alert("Please fill out all the fields");
+        return;
+      }
+
+      try {
+        const loginResponse = await loginUser(email, password);
+
+        if (loginResponse.error) {
+          alert(`Connexion error: ${loginResponse.error}`);
+          return;
+        }
+
+        const saltResponse = await getSalt();
+
+        if (saltResponse.error) {
+          alert(`Error while fetching salt: ${saltResponse.error}`);
+          return;
+        }
+
+        alert("✅ Connexion successful!");
+        window.location.href = "loggedIn/home.html";
+      } catch (error) {
+        console.error("An error occured whilst authenticating:", error);
+        alert("❌ Server unreachable!");
+      }
+    });
+  }
+});

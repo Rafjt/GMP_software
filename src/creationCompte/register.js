@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://localhost:3001/auth";
+import { API_AUTH_URL } from "../components/constants.js";
 
 function isValidEmail(email) {
     const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$/;
@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             try {
                 const hashedPassword = await bcrypt.hash(password, 10);
-                const response = await fetch(`${API_BASE_URL}/register`, {
+                const response = await fetch(`${API_AUTH_URL}/register`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
