@@ -19,17 +19,17 @@ document.addEventListener("DOMContentLoaded", () => {
             const password = document.querySelector('input[type="password"]').value.trim();
 
             if (!email || !password) {
-                alert("Veuillez remplir tous les champs.");
+                alert("Please fill out every field");
                 return;
             }
 
             if (!isValidEmail(email)) {
-                alert("Champs mail incorrect");
+                alert("Incorrect email field");
                 return;
             }
 
             if (!isValidPassword(password)) {
-                alert("Champs mot de passe incorrect");
+                alert("Incorrect password field");
                 return;
             }
 
@@ -46,14 +46,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 const data = await response.json();
 
                 if (response.ok) {
-                    alert("Inscription réussie ! Vérifiez votre email pour activer votre compte.");
+                    alert("Registration successful! Check your email to activate your account.");
                     window.location.href = "../index.html";
                 } else {
-                    alert(data.error || "Une erreur est survenue.");
+                    alert(data.error || "An unexpected error has occured");
                 }
             } catch (error) {
-                console.error("Erreur lors de l'inscription:", error);
-                alert("Impossible de contacter le serveur.");
+                console.error("An error has occured during registration", error);
+                alert("Server unreachable");
             }
         });
     }
