@@ -1,8 +1,8 @@
 import { pullPassword, deletePassword, logout } from '../components/functions.js';
-import { decrypt } from '../components/crypto.js'; // adjust if needed
+// import { decrypt } from '../components/crypto.js'; // adjust if needed
 
 const searchInput = document.getElementById('searchInput');
-const passwordContainer = document.getElementById('passwordContainer');
+const passwordContainer = document.getElementById('passwordList');
 
 let passwords = [];
 let visiblePasswords = {};
@@ -99,22 +99,20 @@ window.addEventListener('DOMContentLoaded', async () => {
     passwords = await Promise.all(
       raw.map(async (item) => {
         try {
-          console.log(item.value);
-          console.log(item);
-          const plain = await decrypt(item.value);
-          return { ...item, value: plain };
+          const response = await window.electronAPI.decryptPassword(item.value);
+          console.log(response);
+          if (response.error) throw new Error(response.error);
+          return { ...item, value: response.plainText };
         } catch (e) {
           console.error(`Failed to decrypt password with id ${item.id}:`, e);
           if (e.message === "Key is missing.") {
-            console.warn("Key is missing. Logging out.");
             logout();
-            window.location.href = '/login.html'; // adjust if needed
+            window.location.href = '/login.html';
           }
           return { ...item, value: '[DECRYPTION FAILED]' };
         }
       })
     );
-
     renderPasswords();
   } catch (err) {
     console.error("Error loading passwords:", err);
