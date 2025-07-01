@@ -16,23 +16,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
       try {
         const loginResponse = await loginUser(email, password);
-
         if (loginResponse.error) {
-          alert(`Connexion error: ${loginResponse.error}`);
+          alert(`❌ Connexion error: ${loginResponse.error}`);
           return;
         }
 
         const saltResponse = await getSalt();
+        if (saltResponse.error || !saltResponse.salt) {
+          alert(`❌ Error while fetching salt: ${saltResponse.error}`);
+          return;
+        }
 
-        if (saltResponse.error) {
-          alert(`Error while fetching salt: ${saltResponse.error}`);
+        const salt = saltResponse.salt;
+
+        const keyResult = await window.electronAPI.setCryptoKey(password, salt);
+        if (keyResult.error) {
+          alert(`❌ Failed to initialize encryption: ${keyResult.error}`);
           return;
         }
 
         alert("✅ Connexion successful!");
         window.location.href = "loggedIn/home.html";
+
       } catch (error) {
-        console.error("An error occured whilst authenticating:", error);
+        console.error("An error occurred during login:", error);
         alert("❌ Server unreachable!");
       }
     });
