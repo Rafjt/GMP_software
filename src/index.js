@@ -3,7 +3,8 @@ const path = require('node:path');
 const { ipcMain } = require('electron');
 const bcrypt = require('bcryptjs');
 const deriveKey = require('./components/deriveKey.js');
-const decryptPassword = require('./components/crypto.js'); 
+const { decryptPassword, encryptPassword } = require('./components/crypto.js'); 
+
 
 let cachedKey = null;
 
@@ -23,6 +24,11 @@ ipcMain.handle('set-crypto-key', async (_event, password, saltBase64) => {
 
 ipcMain.handle('decrypt-password', async (_event, cipherText) => {
   return await decryptPassword(cipherText, cachedKey); 
+});
+
+ipcMain.handle('encrypt-password', async (event, plainText) => {
+  const result = await encryptPassword(plainText, cachedKey);
+  return result;
 });
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.

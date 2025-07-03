@@ -9,5 +9,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
   },
   setCryptoKey: async (password, saltBase64) => {
     return await ipcRenderer.invoke('set-crypto-key', password, saltBase64);
+  },
+  encryptPassword: async (plaintext) => {
+    return await ipcRenderer.invoke('encrypt-password', plaintext)
   }
 });
