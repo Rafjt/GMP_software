@@ -1,10 +1,5 @@
 import { createPassword, updatePassword, pullPassword } from "../components/functions.js";
-
-function isValidPassword(password) {
-    if (password.length < 12) return false;
-    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()\-_=+\[\]{}|;:,.?/~])(?=.*\d).{12,}$/;
-    return regex.test(password);
-}
+import { isValidPassword } from "../components/formValidation.js";
 
 const valueInput = document.getElementById("value");
 const warningDiv = document.getElementById("passwordWarning");
