@@ -60,7 +60,7 @@ async function renderPasswords() {
     editBtn.className = 'btn btn-sm btn-light text-dark m-3';
     editBtn.textContent = 'Edit';
     editBtn.onclick = () => {
-      window.location.href = `password-management.html?mode=edit&id=${item.id}`;
+      window.location.href = `pwdManage.html?mode=edit&id=${item.id}`;
     };
   
     const deleteBtn = document.createElement('button');
