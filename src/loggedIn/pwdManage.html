@@ -1,55 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>RRPM - Create Password</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <link rel="stylesheet" href="home.css" />
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>RRPM - Create Password</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="home.css" />
+    <link rel="stylesheet" href="../popup/popup.css" />
+  </head>
+  <body>
+    <div
+      class="container d-flex justify-content-center align-items-center vh-100"
+    >
+      <div class="card glassmorphism p-4">
+        <h2 class="text-center text-white mb-4" id="formTitle">
+          Create a new password
+        </h2>
 
-<div class="container d-flex justify-content-center align-items-center vh-100">
-  <div class="card glassmorphism p-4">
-    <h2 class="text-center text-white mb-4" id="formTitle">Create a new password</h2>
+        <form id="createPasswordForm" class="passg-container">
+          <div class="mb-3">
+            <label for="name" class="form-label text-white">Name</label>
+            <input
+              type="text"
+              class="form-control"
+              id="name"
+              placeholder="Enter a name"
+              required
+            />
+          </div>
 
-    <form id="createPasswordForm" class="passg-container">
-      <div class="mb-3">
-        <label for="name" class="form-label text-white">Name</label>
-        <input type="text" class="form-control" id="name" placeholder="Enter a name" required />
+          <div class="mb-3 position-relative">
+            <label for="value" class="form-label text-white">Value</label>
+            <input
+              type="password"
+              class="form-control"
+              id="value"
+              placeholder="Enter password"
+              required
+            />
+            <input
+              type="checkbox"
+              id="eye"
+              style="position: absolute; top: 45px; right: 10px"
+            />
+          </div>
+
+          <div
+            id="passwordWarning"
+            class="text-warning mb-2"
+            style="display: none"
+          ></div>
+
+          <div class="mb-3">
+            <label for="description" class="form-label text-white"
+              >Description</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              id="description"
+              placeholder="Optional description"
+            />
+          </div>
+
+          <div class="mb-4">
+            <label for="url" class="form-label text-white">URL</label>
+            <input
+              type="url"
+              class="form-control"
+              id="url"
+              placeholder="https://example.com"
+            />
+          </div>
+
+          <button type="submit" id="submitBtn" class="btn btn-success w-100">
+            Save Password
+          </button>
+        </form>
+
+        <div class="text-end mt-3">
+          <button onclick="logout()" class="btn btn-danger">🚪 Logout</button>
+        </div>
+
+        <a href="pwdList.html" class="btn btn-outline-light w-100 mt-2">Back</a>
       </div>
-
-      <div class="mb-3 position-relative">
-        <label for="value" class="form-label text-white">Value</label>
-        <input type="password" class="form-control" id="value" placeholder="Enter password" required />
-        <input type="checkbox" id="eye" style="position: absolute; top: 45px; right: 10px;" />
+    </div>
+    <div id="custom-popup" class="custom-popup">
+      <div class="custom-popup-content">
+        <span id="custom-popup-message">Placeholder</span>
+        <button id="popup-close-btn" class="popup-close-btn">&times;</button>
       </div>
-
-      <div id="passwordWarning" class="text-warning mb-2" style="display: none;"></div>
-
-      <div class="mb-3">
-        <label for="description" class="form-label text-white">Description</label>
-        <input type="text" class="form-control" id="description" placeholder="Optional description" />
-      </div>
-
-      <div class="mb-4">
-        <label for="url" class="form-label text-white">URL</label>
-        <input type="url" class="form-control" id="url" placeholder="https://example.com" />
-      </div>
-
-      <button type="submit" id="submitBtn" class="btn btn-success w-100">Save Password</button>
-    </form>
-
-    <div class="text-end mt-3">
-      <button onclick="logout()" class="btn btn-danger">🚪 Logout</button>
     </div>
 
-    <a href="pwdList.html" class="btn btn-outline-light w-100 mt-2">Back</a>
-  </div>
-</div>
-
-<!-- Bootstrap Bundle -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script type="module" src="pwdManage.js"></script> <!-- Or your JS handler -->
-</body>
+    <!-- Bootstrap Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module" src="pwdManage.js"></script>
+    <!-- Or your JS handler -->
+  </body>
 </html>

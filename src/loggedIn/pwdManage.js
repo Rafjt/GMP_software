@@ -4,6 +4,7 @@ import {
   pullPassword,
 } from "../components/functions.js";
 import { isValidPassword } from "../components/formValidation.js";
+import { showPopup } from "../popup/popup.js";
 
 const valueInput = document.getElementById("value");
 const warningDiv = document.getElementById("passwordWarning");
@@ -13,10 +14,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const eyeCheckbox = document.getElementById("eye");
 
   eyeCheckbox.addEventListener("click", () => {
-    passwordInput.type = passwordInput.type === "password" ? "text" : "password";
+    passwordInput.type =
+      passwordInput.type === "password" ? "text" : "password";
   });
 });
-
 
 const urlParams = new URLSearchParams(window.location.search);
 const mode = urlParams.get("mode");
@@ -90,7 +91,7 @@ const initCreatePassword = async () => {
     const { cipher, error } = await window.electronAPI.encryptPassword(value);
 
     if (error) {
-      alert("Encryption failed: " + error);
+      showPopup("Encryption failed: " + error);
       return;
     }
 
@@ -119,14 +120,15 @@ const handleUpdatePassword = async (id) => {
     const { cipher, error } = await window.electronAPI.encryptPassword(value);
 
     if (error) {
-      alert("Encryption failed: " + error);
+      showPopup("Encryption failed: " + error);
       return;
     }
 
     const result = await updatePassword(id, name, cipher, description, url);
 
     if (result && !result.error) {
-      window.location.href = "pwdList.html";
+      showPopup("Password modified", null, "pwdList.html");
+      // window.location.href = "pwdList.html";
     } else {
       console.error("Password update failed:", result?.error);
     }

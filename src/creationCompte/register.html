@@ -10,6 +10,7 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="register.css" />
+    <link rel="stylesheet" href="../popup/popup.css" />
   </head>
   <body>
     <a href="../index.html"><button class="btn btn-dark m-3">Back</button></a>
@@ -18,11 +19,7 @@
     >
       <div class="card glassmorphism p-4 text-center">
         <h1 class="mb-3"><span class="emoji">🔐</span>Create an account</h1>
-        <input
-          type="email"
-          class="form-control mb-3"
-          placeholder="Email"
-        />
+        <input type="email" class="form-control mb-3" placeholder="Email" />
         <input
           type="password"
           class="form-control mb-3"
@@ -42,5 +39,12 @@
     </script>
 
     <script type="module" src="register.js"></script>
+
+    <div id="custom-popup" class="custom-popup">
+      <div class="custom-popup-content">
+        <span id="custom-popup-message">Placeholder</span>
+        <button id="popup-close-btn" class="popup-close-btn">&times;</button>
+      </div>
+    </div>
   </body>
 </html>
