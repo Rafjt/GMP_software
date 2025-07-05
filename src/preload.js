@@ -11,6 +11,9 @@ contextBridge.exposeInMainWorld('electronAPI', {
     return await ipcRenderer.invoke('set-crypto-key', password, saltBase64);
   },
   encryptPassword: async (plaintext) => {
-    return await ipcRenderer.invoke('encrypt-password', plaintext)
+    return await ipcRenderer.invoke('encrypt-password', plaintext);
+  },
+  generateQrCode: async (url) => {
+    return await ipcRenderer.invoke('generate-qrcode', url);
   }
 });

@@ -1,5 +1,6 @@
-import { changeMasterPassword, deleteAccount } from '../components/functions.js';
+import { changeMasterPassword, deleteAccount,fetch2faStatusApi, toggle2faApi } from '../components/functions.js';
 import { isValidPassword } from '../components/formValidation.js';
+
 
 const toggleBtn = document.getElementById('togglePasswordBtn');
 const passwordFields = document.getElementById('passwordFields');
@@ -14,6 +15,62 @@ const showDeleteBtn = document.getElementById('showDeleteBtn');
 const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
 const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
 const deleteFeedback = document.getElementById('deleteFeedback');
+
+const toggle2faBtn = document.getElementById('toggle2faBtn');
+const twofaFeedback = document.getElementById('twofaFeedback');
+const qrcodeContainer = document.getElementById('qrcodeContainer');
+const qrcodeImg = document.getElementById('qrcodeImg');
+
+async function generateQrCode(url) {
+  const result = await window.electronAPI.generateQrCode(url);
+  if (result.success) {
+    return result.qr;
+  } else {
+    console.error('QR Code generation failed:', result.error);
+    return null;
+  }
+}
+
+async function fetch2faStatus() {
+  const result = await fetch2faStatusApi();
+  console.log('2FA Status Result:', result);
+  if (result.error) {
+    toggle2faBtn.textContent = 'Failed to load 2FA status';
+    toggle2faBtn.disabled = true;
+  } else {
+    toggle2faBtn.textContent = result.enabled ? 'Disable 2FA' : 'Enable 2FA';
+    toggle2faBtn.disabled = false;
+    toggle2faBtn.dataset.enabled = result.enabled ? '1' : '0';
+  }
+}
+
+toggle2faBtn.addEventListener('click', async () => {
+  const currentStatus = toggle2faBtn.dataset.enabled === '1' ? 1 : 0;
+  const data = await toggle2faApi(currentStatus);
+  if (data.success) {
+    twofaFeedback.textContent = data.message;
+    await fetch2faStatus();
+    if (data.otpauth_url) {
+      const qrCodeDataUrl = await generateQrCode(data.otpauth_url);
+      if (qrCodeDataUrl) {
+        qrcodeImg.src = qrCodeDataUrl;
+        qrcodeContainer.style.display = 'block';
+      } else {
+        qrcodeContainer.style.display = 'none';
+        qrcodeImg.src = '';
+      }
+    } else {
+      qrcodeContainer.style.display = 'none';
+      qrcodeImg.src = '';
+    }
+  } else {
+    twofaFeedback.textContent = data.error || 'Operation failed.';
+  }
+});
+
+// Initial load
+fetch2faStatus();
+
 
 // Toggle Password Change Fields
 toggleBtn.addEventListener('click', () => {
