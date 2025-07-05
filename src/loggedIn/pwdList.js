@@ -40,7 +40,7 @@ async function renderPasswords() {
       }
       value.onclick = () => copyToClipboard(item.id, item.value);
     } else {
-      value.textContent = '•'.repeat(Math.min(item.value.length, 12)) + (item.value.length > 12 ? '…' : '');
+      value.textContent = '•'.repeat(10);
       value.onclick = null; // Disable copying
     }
       
