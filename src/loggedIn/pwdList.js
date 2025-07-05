@@ -7,6 +7,8 @@ let passwords = [];
 let visiblePasswords = {};
 let copiedStatus = {};
 
+let hideTimers = {};
+
 async function renderPasswords() {
   const query = searchInput.value.toLowerCase();
   passwordContainer.innerHTML = '';
@@ -39,8 +41,9 @@ async function renderPasswords() {
       value.onclick = () => copyToClipboard(item.id, item.value);
     } else {
       value.textContent = '•'.repeat(Math.min(item.value.length, 12)) + (item.value.length > 12 ? '…' : '');
+      value.onclick = null; // Disable copying
     }
-  
+      
     textSection.appendChild(name);
     textSection.appendChild(value);
   
@@ -52,10 +55,27 @@ async function renderPasswords() {
     toggleBtn.className = 'btn btn-sm btn-light text-dark m-3';
     toggleBtn.textContent = visiblePasswords[item.id] ? 'Hide' : 'Show';
     toggleBtn.onclick = () => {
-      visiblePasswords[item.id] = !visiblePasswords[item.id];
-      renderPasswords();
+      const isVisible = visiblePasswords[item.id];
+
+      if (isVisible) {
+        // Manually hide and clear timer if exists
+        visiblePasswords[item.id] = false;
+        clearTimeout(hideTimers[item.id]);
+        delete hideTimers[item.id];
+        renderPasswords();
+      } else {
+        // Show and auto-hide after 10 seconds
+        visiblePasswords[item.id] = true;
+        renderPasswords();
+
+        hideTimers[item.id] = setTimeout(() => {
+          visiblePasswords[item.id] = false;
+          delete hideTimers[item.id];
+          renderPasswords();
+        }, 10000); // 10 seconds
+      }
     };
-  
+      
     const editBtn = document.createElement('button');
     editBtn.className = 'btn btn-sm btn-light text-dark m-3';
     editBtn.textContent = 'Edit';
