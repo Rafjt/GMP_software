@@ -1,7 +1,12 @@
-import { pullPassword, deletePassword, logout } from '../components/functions.js';
+import {
+  pullPassword,
+  deletePassword,
+  logout,
+} from "../components/functions.js";
+import { showPopup } from "../popup/popup.js";
 
-const searchInput = document.getElementById('searchInput');
-const passwordContainer = document.getElementById('passwordList');
+const searchInput = document.getElementById("searchInput");
+const passwordContainer = document.getElementById("passwordList");
 
 let passwords = [];
 let visiblePasswords = {};
@@ -11,49 +16,53 @@ let hideTimers = {};
 
 async function renderPasswords() {
   const query = searchInput.value.toLowerCase();
-  passwordContainer.innerHTML = '';
+  passwordContainer.innerHTML = "";
 
-  const filtered = passwords.filter(p => p.name.toLowerCase().includes(query));
+  const filtered = passwords.filter((p) =>
+    p.name.toLowerCase().includes(query)
+  );
 
-  filtered.forEach(item => {
-    const container = document.createElement('div');
-    container.className = 'rounded p-2 d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center passg-container';
-  
+  filtered.forEach((item) => {
+    const container = document.createElement("div");
+    container.className =
+      "rounded p-2 d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center passg-container";
+
     // Name + Value Section
-    const textSection = document.createElement('div');
-    textSection.className = 'd-flex flex-column ml-2';
-  
-    const name = document.createElement('div');
-    name.className = 'fw-semibold text-white ml-2';
+    const textSection = document.createElement("div");
+    textSection.className = "d-flex flex-column ml-2";
+
+    const name = document.createElement("div");
+    name.className = "fw-semibold text-white ml-2";
     name.textContent = item.name;
-  
-    const value = document.createElement('div');
-    value.className = 'text-white';
-    value.style.cursor = 'pointer';
-    value.title = 'Click to copy';
-  
+
+    const value = document.createElement("div");
+    value.className = "text-white";
+    value.style.cursor = "pointer";
+    value.title = "Click to copy";
+
     if (visiblePasswords[item.id]) {
       if (copiedStatus[item.id]) {
-        value.textContent = '✅ Copied!';
+        value.textContent = "✅ Copied!";
       } else {
-        value.textContent = item.value.length > 24 ? item.value.slice(0, 24) + '…' : item.value;
+        value.textContent =
+          item.value.length > 24 ? item.value.slice(0, 24) + "…" : item.value;
       }
       value.onclick = () => copyToClipboard(item.id, item.value);
     } else {
-      value.textContent = '•'.repeat(10);
+      value.textContent = "•".repeat(10);
       value.onclick = null; // Disable copying
     }
-      
+
     textSection.appendChild(name);
     textSection.appendChild(value);
-  
+
     // Buttons Section
-    const buttonGroup = document.createElement('div');
-    buttonGroup.className = 'btn-group ml-2';
-  
-    const toggleBtn = document.createElement('button');
-    toggleBtn.className = 'btn btn-sm btn-light text-dark m-3';
-    toggleBtn.textContent = visiblePasswords[item.id] ? 'Hide' : 'Show';
+    const buttonGroup = document.createElement("div");
+    buttonGroup.className = "btn-group ml-2";
+
+    const toggleBtn = document.createElement("button");
+    toggleBtn.className = "btn btn-sm btn-light text-dark m-3";
+    toggleBtn.textContent = visiblePasswords[item.id] ? "Hide" : "Show";
     toggleBtn.onclick = () => {
       const isVisible = visiblePasswords[item.id];
 
@@ -75,27 +84,27 @@ async function renderPasswords() {
         }, 10000); // 10 seconds
       }
     };
-      
-    const editBtn = document.createElement('button');
-    editBtn.className = 'btn btn-sm btn-light text-dark m-3';
-    editBtn.textContent = 'Edit';
+
+    const editBtn = document.createElement("button");
+    editBtn.className = "btn btn-sm btn-light text-dark m-3";
+    editBtn.textContent = "Edit";
     editBtn.onclick = () => {
       window.location.href = `pwdManage.html?mode=edit&id=${item.id}`;
     };
-  
-    const deleteBtn = document.createElement('button');
-    deleteBtn.className = 'btn btn-sm btn-light text-dark m-3';
-    deleteBtn.textContent = 'Delete';
+
+    const deleteBtn = document.createElement("button");
+    deleteBtn.className = "btn btn-sm btn-light text-dark m-3";
+    deleteBtn.textContent = "Delete";
     deleteBtn.onclick = async () => {
       await deletePassword(item.id);
-      passwords = passwords.filter(p => p.id !== item.id);
+      passwords = passwords.filter((p) => p.id !== item.id);
       renderPasswords();
     };
-  
+
     buttonGroup.appendChild(toggleBtn);
     buttonGroup.appendChild(editBtn);
     buttonGroup.appendChild(deleteBtn);
-  
+
     // Assemble
     container.appendChild(textSection);
     container.appendChild(buttonGroup);
@@ -117,9 +126,9 @@ async function copyToClipboard(id, text) {
   }
 }
 
-searchInput.addEventListener('input', renderPasswords);
+searchInput.addEventListener("input", renderPasswords);
 
-window.addEventListener('DOMContentLoaded', async () => {
+window.addEventListener("DOMContentLoaded", async () => {
   try {
     const raw = await pullPassword();
 
@@ -139,13 +148,12 @@ window.addEventListener('DOMContentLoaded', async () => {
             logout();
             window.location.href = "../index.html";
           }
-          return { ...item, value: '[DECRYPTION FAILED]' };
+          return { ...item, value: "[DECRYPTION FAILED]" };
         }
       })
     );
 
     renderPasswords();
-
   } catch (err) {
     console.error("Error loading passwords:", err.message);
     logout();
@@ -153,19 +161,18 @@ window.addEventListener('DOMContentLoaded', async () => {
   }
 });
 
-
 document.addEventListener("DOMContentLoaded", () => {
   const logoutButton = document.querySelector("#logout");
 
   if (logoutButton) {
     logoutButton.addEventListener("click", async () => {
       try {
-        await logout(); 
-        alert("Successfuly logged out");
-        window.location.href = "../index.html";
+        await logout();
+        showPopup("Successfuly logged out", null, "../index.html");
+        // window.location.href = "../index.html";
       } catch (error) {
         console.error("An error occured whilst logging out", error);
-        alert("Logout failed");
+        showPopup("Logout failed");
       }
     });
   }
