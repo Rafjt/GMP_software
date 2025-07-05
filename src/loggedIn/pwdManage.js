@@ -8,6 +8,16 @@ import { isValidPassword } from "../components/formValidation.js";
 const valueInput = document.getElementById("value");
 const warningDiv = document.getElementById("passwordWarning");
 
+document.addEventListener("DOMContentLoaded", () => {
+  const passwordInput = document.getElementById("value");
+  const eyeCheckbox = document.getElementById("eye");
+
+  eyeCheckbox.addEventListener("click", () => {
+    passwordInput.type = passwordInput.type === "password" ? "text" : "password";
+  });
+});
+
+
 const urlParams = new URLSearchParams(window.location.search);
 const mode = urlParams.get("mode");
 const passwordId = urlParams.get("id");
