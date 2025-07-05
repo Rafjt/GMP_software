@@ -13,6 +13,16 @@
     <div class="card glassmorphism p-4 w-100" style="max-width: 500px;">
       <h3 class="text-center mb-4">⚙️ Settings</h3>
 
+      <!-- 2FA Section -->
+      <div class="mb-5">
+        <button id="toggle2faBtn" class="btn btn-warning w-100 mb-3">🔐 Loading 2FA status...</button>
+        <p id="twofaFeedback" class="text-center text-info"></p>
+        <div id="qrcodeContainer" class="text-center" style="display: none;">
+          <p>Scan this QR code with your Authenticator app:</p>
+          <img id="qrcodeImg" src="" alt="2FA QR Code" class="img-fluid" />
+        </div>
+      </div>
+
       <!-- Change Password -->
       <div class="mb-5">
         <button id="togglePasswordBtn" class="btn btn-dark w-100 mb-3">🔐 Change master password</button>

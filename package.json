@@ -20,7 +20,8 @@
   "dependencies": {
     "bcryptjs": "^3.0.2",
     "bootstrap": "^5.3.3",
-    "electron-squirrel-startup": "^1.0.1"
+    "electron-squirrel-startup": "^1.0.1",
+    "qrcode": "^1.5.4"
   },
   "devDependencies": {
     "@electron-forge/cli": "^7.7.0",

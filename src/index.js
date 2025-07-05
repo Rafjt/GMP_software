@@ -4,9 +4,18 @@ const { ipcMain } = require('electron');
 const bcrypt = require('bcryptjs');
 const deriveKey = require('./components/deriveKey.js');
 const { decryptPassword, encryptPassword } = require('./components/crypto.js'); 
-
+const QRCode = require('qrcode');
 
 let cachedKey = null;
+
+ipcMain.handle('generate-qrcode', async (_event, url) => {
+  try {
+    const qr = await QRCode.toDataURL(url);
+    return { success: true, qr };
+  } catch (err) {
+    return { success: false, error: err.message };
+  }
+});
 
 ipcMain.handle('hash-password', async (_event, password) => {
   return await bcrypt.hash(password, 10);
