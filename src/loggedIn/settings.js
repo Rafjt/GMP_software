@@ -89,12 +89,12 @@ confirmChangeBtn.addEventListener('click', async () => {
   const newPass = newPasswordInput.value.trim();
 
   if (!oldPass || !newPass) {
-    showFeedback(feedbackMessage, 'Please fill in both fields.', true);
+    showPopup('Please fill in both fields.');
     return;
   }
 
   if (!isValidPassword(newPass)) {
-    showFeedback(feedbackMessage, 'New password does not meet the required criteria.', true);
+    showPopup('New password does not meet the required criteria.');
     return;
   }
 
@@ -105,7 +105,11 @@ confirmChangeBtn.addEventListener('click', async () => {
       toggleBtn.textContent = "Change master password";
       oldPasswordInput.value = "";
       newPasswordInput.value = "";
-  }
+  } else if (result.error == "New password cannot be the same as the old password"){
+    showPopup(`${result.error}`)}
+    else {
+    showPopup(`${result.error}`)
+    }
 });
 
 // Show Delete Confirmation
