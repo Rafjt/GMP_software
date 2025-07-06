@@ -1,4 +1,4 @@
-import { API_AUTH_URL, API_BASE_URL,API_2FA_URL } from "./constants.js";
+import { API_AUTH_URL, API_BASE_URL, API_2FA_URL } from "./constants.js";
 export {
   logout,
   generatePassword,
@@ -12,7 +12,8 @@ export {
   deleteAccount,
   verify2FACode,
   fetch2faStatusApi,
-  toggle2faApi
+  toggle2faApi,
+  createAccount
 };
 
 async function pullPassword() {
@@ -197,6 +198,31 @@ async function getSalt() {
   }
 }
 
+async function createAccount(email, password) {
+  try {
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const response = await fetch(`${API_AUTH_URL}/register`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password: hashedPassword }),
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      return data;
+    } else {
+      return { error: data.message || "Registration failed" };
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    return { error: "Registration failed" };
+  }
+}
+
+
 async function changeMasterPassword(oldPassword, newPassword) {
   try {
     const response = await fetch(`${API_BASE_URL}/master/password`, {
@@ -253,8 +279,8 @@ async function deleteAccount() {
 async function verify2FACode(userId, code) {
   try {
     const response = await fetch(`${API_2FA_URL}/verify-2fa`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         userId,
         code: code.trim(),
@@ -266,15 +292,14 @@ async function verify2FACode(userId, code) {
   }
 }
 
-
 async function fetch2faStatusApi() {
   try {
     const response = await fetch(`${API_2FA_URL}/isEnabled`, {
       method: "GET",
-      credentials: "include"
+      credentials: "include",
     });
     const data = await response.json();
-    if (Array.isArray(data) && data.length > 0 && 'enabled' in data[0]) {
+    if (Array.isArray(data) && data.length > 0 && "enabled" in data[0]) {
       return { enabled: data[0].enabled };
     } else {
       return { enabled: null, error: "Malformed response" };
@@ -286,10 +311,10 @@ async function fetch2faStatusApi() {
 
 async function toggle2faApi(enabled) {
   try {
-    const endpoint = enabled === 1 ? 'disable' : 'enable';
+    const endpoint = enabled === 1 ? "disable" : "enable";
     const response = await fetch(`${API_2FA_URL}/${endpoint}`, {
       method: "POST",
-      credentials: "include"
+      credentials: "include",
     });
     return await response.json();
   } catch (error) {
