@@ -36,7 +36,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
       try {
         const response = await createAccount(email, password);
-        console.log(response)
 
         if (response.error) {
           showPopup(`❌ Connexion error: ${response.error}`);

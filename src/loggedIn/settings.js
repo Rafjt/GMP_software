@@ -34,7 +34,6 @@ async function generateQrCode(url) {
 
 async function fetch2faStatus() {
   const result = await fetch2faStatusApi();
-  console.log('2FA Status Result:', result);
   if (result.error) {
     toggle2faBtn.textContent = 'Failed to load 2FA status';
     toggle2faBtn.disabled = true;
