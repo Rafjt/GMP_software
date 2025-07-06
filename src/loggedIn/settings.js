@@ -1,5 +1,6 @@
 import { changeMasterPassword, deleteAccount,fetch2faStatusApi, toggle2faApi } from '../components/functions.js';
 import { isValidPassword } from '../components/formValidation.js';
+import { showPopup } from "../popup/popup.js";
 
 
 const toggleBtn = document.getElementById('togglePasswordBtn');
@@ -100,13 +101,11 @@ confirmChangeBtn.addEventListener('click', async () => {
 
   const result = await changeMasterPassword(oldPass, newPass);
   if (result.success) {
-    showFeedback(feedbackMessage, result.message || 'Password changed successfully.', false);
-    passwordFields.style.display = 'none';
-    toggleBtn.textContent = 'Change master password';
-    oldPasswordInput.value = '';
-    newPasswordInput.value = '';
-  } else {
-    showFeedback(feedbackMessage, result.error || 'An error occurred.', true);
+    showPopup("Password changed successfully ✔")
+      passwordFields.style.display = "none";
+      toggleBtn.textContent = "Change master password";
+      oldPasswordInput.value = "";
+      newPasswordInput.value = "";
   }
 });
 
@@ -131,10 +130,12 @@ confirmDeleteBtn.addEventListener('click', async () => {
   try {
     const result = await deleteAccount();
     if (result.success) {
-      showFeedback(deleteFeedback, result.message || 'Account deleted.', false);
-      setTimeout(() => window.location.href = '../index.html', 1000);
+      // showFeedback(deleteFeedback, result.message || 'Account deleted.', false);
+      // setTimeout(() => window.location.href = '../index.html', 1000);
+      showPopup("Account deleted.", null, '../index.html')
     } else {
       showFeedback(deleteFeedback, result.error || 'Deletion failed.', true);
+      showPopup("Deletion failed")
     }
   } catch (e) {
     showFeedback(deleteFeedback, 'Unexpected error.', true);
