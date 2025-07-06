@@ -26,22 +26,13 @@ function generateRandomIV() {
   return crypto.getRandomValues(new Uint8Array(12)); // 12-byte IV
 }
 
-function generateDeterministicIV(counter) {
-  const iv = new Uint8Array(12); // 96 bits
-  const view = new DataView(iv.buffer);
-  view.setUint32(8, counter); // utilise les 4 derniers octets comme compteur
-  return iv;
-}
-
-
 async function encryptPassword(plainText, key) {
   if (!key) {
     return { error: "Key is missing." };
   }
 
   try {
-    const counter = await generateRandomIV();
-    const iv = generateDeterministicIV(counter);
+    const iv = generateRandomIV();  // Random IV per encryption
     const enc = new TextEncoder().encode(plainText);
 
     const buffer = await crypto.subtle.encrypt(
@@ -61,5 +52,6 @@ async function encryptPassword(plainText, key) {
     return { error: "Encryption failed." };
   }
 }
+
 
 module.exports = { decryptPassword, encryptPassword }
