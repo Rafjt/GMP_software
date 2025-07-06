@@ -13,7 +13,8 @@ export {
   verify2FACode,
   fetch2faStatusApi,
   toggle2faApi,
-  createAccount
+  createAccount,
+  sendResetEmail
 };
 
 async function pullPassword() {
@@ -251,7 +252,6 @@ async function changeMasterPassword(oldPassword, newPassword) {
 }
 
 async function deleteAccount() {
-  console.log("DBG: deleteAccount() has been called");
   try {
     const response = await fetch(`${API_AUTH_URL}/deleteAccount`, {
       method: "DELETE",
@@ -320,4 +320,14 @@ async function toggle2faApi(enabled) {
   } catch (error) {
     return { success: false, error: error.message || "Network error" };
   }
+}
+
+async function sendResetEmail(email) {
+  return await fetch(`${API_AUTH_URL}/request-password-reset`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ email })
+  });
 }
